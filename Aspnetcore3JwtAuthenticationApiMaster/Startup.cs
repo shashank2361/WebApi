@@ -74,7 +74,7 @@ namespace WebApi
 
             // custom jwt auth middleware
             app.UseMiddleware<JwtMiddleware>();
-
+                // test comment
             app.UseEndpoints(x => x.MapControllers());
             app.UseSession();
             
