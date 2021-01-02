@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "Aspnetcore3JwtAuthenticationApiMaster\WebApi.csproj", "{23A71D4A-4388-4BC3-99A6-9840F3EAA208}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{1B792BB0-4485-4132-8E77-95C886CC6DFA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{EC6AED92-3CB3-45FC-8E1E-3ED7CE0D2340}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23A71D4A-4388-4BC3-99A6-9840F3EAA208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23A71D4A-4388-4BC3-99A6-9840F3EAA208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23A71D4A-4388-4BC3-99A6-9840F3EAA208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23A71D4A-4388-4BC3-99A6-9840F3EAA208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B792BB0-4485-4132-8E77-95C886CC6DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B792BB0-4485-4132-8E77-95C886CC6DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B792BB0-4485-4132-8E77-95C886CC6DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B792BB0-4485-4132-8E77-95C886CC6DFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC6AED92-3CB3-45FC-8E1E-3ED7CE0D2340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC6AED92-3CB3-45FC-8E1E-3ED7CE0D2340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC6AED92-3CB3-45FC-8E1E-3ED7CE0D2340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC6AED92-3CB3-45FC-8E1E-3ED7CE0D2340}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {311A1E68-B316-445C-8E5B-5589DD19BA8A}
+	EndGlobalSection
+EndGlobal
