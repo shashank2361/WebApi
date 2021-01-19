@@ -2,13 +2,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using WebApi.Entities;
+using DAL.Models;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 {
     public void OnAuthorization(AuthorizationFilterContext context)
     {
+        var _context = context.HttpContext.Items["User"];
         var user = (User)context.HttpContext.Items["User"];
         if (user == null)
         {

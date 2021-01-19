@@ -14,7 +14,7 @@ namespace Test
     {
 
         EmployeeController _employeeController;
-        private IUserService _userService;
+        //private IUserService _userService;
         IEmployeeBs _employeeBs;
         IEmployeeDb _employeeDb;
 

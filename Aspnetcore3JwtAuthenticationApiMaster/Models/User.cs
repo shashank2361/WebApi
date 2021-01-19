@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace WebApi.Entities
+namespace WebApi.Models
 {
     public class User
     {

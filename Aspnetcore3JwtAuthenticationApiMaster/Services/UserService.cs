@@ -6,75 +6,91 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using WebApi.Entities;
+using WebApi.Models;
 using WebApi.Helpers;
 using WebApi.Models;
+using BLL;
 
 namespace WebApi.Services
 {
     public interface IUserService
     {
-        AuthenticateResponse Authenticate(AuthenticateRequest model);
-        IEnumerable<User> GetAll();
-        User GetById(int id);
+     //   AuthenticateResponse Authenticate(AuthenticateRequest model);
+        //IEnumerable<User> GetAll();
+     //    User GetById(int id);
     }
 
     public class UserService : IUserService
     {
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<User> _users = new List<User>
-        {
-            new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Password = "test" },
-            new User { Id = 2, FirstName = "Test2", LastName = "User2", Username = "test2", Password = "test2" }
+        //private List<User> _users = new List<User>
+        //{
+        //    new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Password = "test" },
+        //    new User { Id = 2, FirstName = "Test2", LastName = "User2", Username = "test2", Password = "test2" }
 
-        };
+        //};
 
-        private readonly AppSettings _appSettings;
 
-        public UserService(IOptions<AppSettings> appSettings)
-        {
-            _appSettings = appSettings.Value;
-        }
+        //IUserBs _userBs;
 
-        public AuthenticateResponse Authenticate(AuthenticateRequest model)
-        {
-            var user = _users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
+        //private readonly AppSettings _appSettings;
+        //private IJWTAuthenticationManager _JWTAuthenticationManager;
 
-            // return null if user not found
-            if (user == null) return null;
+        //public UserService(IOptions<AppSettings> appSettings, IUserBs userBs, IJWTAuthenticationManager JWTAuthenticationManager)
+        //{
+        //    _appSettings = appSettings.Value;
+        //    _JWTAuthenticationManager = JWTAuthenticationManager;
+        //    _userBs = userBs;
+        //}
 
-            // authentication successful so generate jwt token
-            var token = generateJwtToken(user);
-            System.Threading.Thread.Sleep(5000);
+        //public AuthenticateResponse Authenticate(AuthenticateRequest model)
+        //{
+        //    var  Users = _userBs.GetAll();
 
-            return new AuthenticateResponse(user, token);
-        }
+        //    var user = Users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
 
-        public IEnumerable<User> GetAll()
-        {
-            return _users;
-        }
+        //    // return null if user not found
+        //    if (user == null) return null;
+        //    var  Usermodal = new WebApi.Models.User()
+        //    {
+        //        Username = user.Username,
+        //        Id = user.Id,
+        //        Password = user.Password,
+        //        FirstName = user.FirstName,
+        //        LastName = user.LastName
+        //    };
+        //    // authentication successful so generate jwt token
+        //    var token = _JWTAuthenticationManager.generateJwtToken(Usermodal);
+        //    System.Threading.Thread.Sleep(2000);
 
-        public User GetById(int id)
-        {
-            return _users.FirstOrDefault(x => x.Id == id);
-        }
+        //    return new AuthenticateResponse(Usermodal, token);
+        //}
+
+        //public IEnumerable<User> GetAll()
+        //{
+        //    return _users;
+        //}
+
+        //public User GetById(int id)
+        //{
+        //    return _users.FirstOrDefault(x => x.Id == id);
+        //}
 
         // helper methods
 
-        private string generateJwtToken(User user)
-        {
-            // generate token that is valid for 7 days
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddMinutes(20),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
+        //private string generateJwtToken(User user)
+        //{
+        //    // generate token that is valid for 7 days
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+        //    var tokenDescriptor = new SecurityTokenDescriptor
+        //    {
+        //        Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+        //        Expires = DateTime.UtcNow.AddMinutes(60),
+        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        //    };
+        //    var token = tokenHandler.CreateToken(tokenDescriptor);
+        //    return tokenHandler.WriteToken(token);
+        //}
     }
 }

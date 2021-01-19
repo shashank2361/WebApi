@@ -25,6 +25,7 @@ namespace DAL.Models
         public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<MigrationHistory> MigrationHistories { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<TblCity> TblCities { get; set; }
         public virtual DbSet<TblCity1> TblCities1 { get; set; }
         public virtual DbSet<TblContinent> TblContinents { get; set; }
@@ -49,7 +50,7 @@ namespace DAL.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=.;Database=EmployeeDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.;Database=EmployeeDB;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
 
@@ -198,6 +199,27 @@ namespace DAL.Models
                 entity.Property(e => e.ProductVersion)
                     .IsRequired()
                     .HasMaxLength(32);
+            });
+
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.ToTable("RefreshToken");
+
+                entity.Property(e => e.Created).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedByIp).HasMaxLength(20);
+
+                entity.Property(e => e.Expires).HasColumnType("datetime");
+
+                entity.Property(e => e.Revoked).HasColumnType("datetime");
+
+                entity.Property(e => e.RevokedByIp).HasMaxLength(20);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.RefreshTokens)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__RefreshTo__UserI__4589517F");
             });
 
             modelBuilder.Entity<TblCity>(entity =>
@@ -408,9 +430,13 @@ namespace DAL.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.Password).HasMaxLength(100);
+                entity.Property(e => e.FirstName).HasMaxLength(20);
 
-                entity.Property(e => e.Username).HasMaxLength(100);
+                entity.Property(e => e.LastName).HasMaxLength(20);
+
+                entity.Property(e => e.Password).HasMaxLength(20);
+
+                entity.Property(e => e.Username).HasMaxLength(20);
             });
 
             OnModelCreatingPartial(modelBuilder);

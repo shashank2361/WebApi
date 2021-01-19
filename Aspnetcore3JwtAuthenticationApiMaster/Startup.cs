@@ -1,6 +1,7 @@
 ﻿using BLL;
 using DAL;
 using DAL.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +10,10 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 using WebApi.Helpers;
 using WebApi.Services;
 
@@ -27,29 +31,65 @@ namespace WebApi
         // add services to the DI container
         public void ConfigureServices(IServiceCollection services)
         {
+         
+            services.AddDistributedMemoryCache();
+            services.AddSession( );
+            services.AddMvc();
+            //services.AddDbContextPool<EmployeeDBContext>(opt =>
+            //{
+            //   opt.UseLazyLoadingProxies()
+            //    opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            //});
+
             services.AddCors();
             services.AddControllers();
 
             // configure strongly typed settings object
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-           
-            
-            
+            //var appSettingsSection = Configuration.GetSection("AppSettings");
+ 
+            //var appSettings = appSettingsSection.Get<AppSettings>();
+            //var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            //services.AddAuthentication(x =>
+            //{
+            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(x =>
+            //{
+            //    x.RequireHttpsMetadata = false;
+            //    x.SaveToken = true;
+            //    x.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuerSigningKey = true,
+            //        IssuerSigningKey = new SymmetricSecurityKey(key),
+            //        ValidateIssuer = false,
+            //        ValidateAudience = false,
+            //     //   ValidateLifetime = true,
+            //        // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+            //        ClockSkew = TimeSpan.Zero
+            //    };
+            //});
+
             // configure DI for application services
-            services.AddScoped<IUserService, UserService>();
+            services.AddDbContext<EmployeeDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // services.AddSingleton<ITokenRefresher, TokenRefresher>();
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
+            services.AddScoped<IJWTAuthenticationManager, JWTAuthenticationManager>();
+            services.AddScoped<ITokenRefresher, TokenRefresher>();
+
             //services.AddScoped<IEmployeeSerivce, EmployeeSerivce>();
+            services.AddScoped<IUserBs, UserBs>();
             services.AddScoped<IEmployeeBs, EmployeeBs>();
             services.AddScoped<IEmployeeDb, EmployeeDb>();
-
-
+            services.AddScoped<IUserDb, UserDb>();
+            
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
-             services.AddDbContext<EmployeeDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-
 
 
             //services.AddMvc(opt =>
@@ -72,12 +112,15 @@ namespace WebApi
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
+            app.UseSession();
+
             // custom jwt auth middleware
             app.UseMiddleware<JwtMiddleware>();
-                // test comment
+            // test comment
+
             app.UseEndpoints(x => x.MapControllers());
-            app.UseSession();
-            
+          
+
         }
     }
 }

@@ -22,6 +22,7 @@ namespace WebApi.Controllers
             // _employeeSerivce = employeeSerivce;
             employeeBs = _employeeBs;
         }
+
         [Authorize]
         [HttpGet]
         public IActionResult Get()
@@ -32,7 +33,7 @@ namespace WebApi.Controllers
             return Ok(emps);
 
         }
-        //[Authorize]
+        [Authorize]
         [HttpGet("/GetLocations")]
         public IActionResult GetLocations()
         {
@@ -44,6 +45,7 @@ namespace WebApi.Controllers
         [HttpPut]
         public IActionResult Edit(Employee emp)
         {
+           //  return BadRequest();
             //var employee = employeeBs.GetById(emp.Id);
             var empl = new DAL.Models.Employee
             {
@@ -71,11 +73,8 @@ namespace WebApi.Controllers
         [HttpPost("/Save")]
         public IActionResult Save(Employee emp)
         {
-
-            System.Threading.Thread.Sleep(2000);
-            return Ok(true);
-
-
+            //System.Threading.Thread.Sleep(2000);
+            //return Ok(true);
             var dalEmp = new DAL.Models.Employee{
             Id = emp.Id,
             FirstName = emp.FirstName,
@@ -85,11 +84,25 @@ namespace WebApi.Controllers
             Salary = emp.Salary,
             Location = emp.Location
             };
-
             var success = employeeBs.Create(dalEmp);
             System.Threading.Thread.Sleep(2000);
             return Ok(success);
         }
+
+
+
+        [Authorize]
+        [HttpDelete("/Delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            //  return BadRequest();
+            //var employee = employeeBs.GetById(emp.Id);
+          
+           var success =  employeeBs.Delete(id);
+            return Ok(success);
+        }
+
+
     }
 }
 
